@@ -184,8 +184,8 @@ int mosquitto_topic_matches_sub2(const char *sub, size_t sublen, const char *top
 {
 	size_t spos;
 
-	UNUSED(sublen);
-	UNUSED(topiclen);
+	(void)(sublen);
+	(void)(topiclen);
 
 	if(!result) return MOSQ_ERR_INVAL;
 	*result = false;

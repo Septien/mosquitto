@@ -75,7 +75,7 @@ int handle__pubrec(struct mosquitto_db *db, struct mosquitto *mosq)
 		return db__message_delete_outgoing(db, mosq, mid, mosq_ms_wait_for_pubrec, 2);
 	}
 #else
-	UNUSED(db);
+	(void)(db);
 
 	log__printf(mosq, MOSQ_LOG_DEBUG, "Client %s received PUBREC (Mid: %d)", mosq->id, mid);
 

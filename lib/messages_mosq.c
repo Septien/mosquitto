@@ -312,8 +312,8 @@ void message__retry_check(struct mosquitto *mosq)
 
 void mosquitto_message_retry_set(struct mosquitto *mosq, unsigned int message_retry)
 {
-	UNUSED(mosq);
-	UNUSED(message_retry);
+	(void)(mosq);
+	(void)(message_retry);
 }
 
 int message__out_update(struct mosquitto *mosq, uint16_t mid, enum mosquitto_msg_state state, int qos)

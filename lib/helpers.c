@@ -42,7 +42,7 @@ static void on_connect(struct mosquitto *mosq, void *obj, int rc)
 {
 	struct userdata__callback *userdata = obj;
 
-	UNUSED(rc);
+	(void)(rc);
 
 	mosquitto_subscribe(mosq, NULL, userdata->topic, userdata->qos);
 }
@@ -197,7 +197,7 @@ libmosq_EXPORT int mosquitto_subscribe_callback(
 			mosquitto_destroy(mosq);
 			return rc;
 		}
-		rc = mosquitto_tls_opts_set(mosq, tls->cert_reqs, tls->tls_version, tls->ciphers);
+		rc = mosquitto_tls_opts_set(mosq, tls->cert_reqs, tls->tls_version, tls->ciphers, tls->groups);
 		if(rc){
 			mosquitto_destroy(mosq);
 			return rc;

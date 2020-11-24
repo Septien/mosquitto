@@ -255,7 +255,7 @@ int net__socket_accept(struct mosquitto_db *db, mosq_sock_t listensock)
 #ifdef WITH_TLS
 static int client_certificate_verify(int preverify_ok, X509_STORE_CTX *ctx)
 {
-	UNUSED(ctx);
+	(void)(ctx);
 
 	/* Preverify should check expiry, revocation. */
 	return preverify_ok;
@@ -393,6 +393,19 @@ int net__tls_server_ctx(struct mosquitto__listener *listener)
 		rc = SSL_CTX_set_cipher_list(listener->ssl_ctx, "DEFAULT:!aNULL:!eNULL:!LOW:!EXPORT:!SSLv2:@STRENGTH");
 		if(rc == 0){
 			log__printf(NULL, MOSQ_LOG_ERR, "Error: Unable to set TLS ciphers. Check cipher list \"%s\".", listener->ciphers);
+			return 1;
+		}
+	}
+	if(listener->groups){
+		rc = SSL_CTX_set1_groups_list(listener->ssl_ctx, listener->groups);
+		if(rc == 0){
+			log__printf(NULL, MOSQ_LOG_ERR, "Error: Unable to set TLS groups. Check groups list \"%s\".", listener->groups);
+			return 1;
+		}
+	}else{
+		rc = SSL_CTX_set1_groups_list(listener->ssl_ctx, "oqs_kem_default");
+		if(rc == 0){
+			log__printf(NULL, MOSQ_LOG_ERR, "Error: Unable to set TLS groups. Check groups list \"%s\".", "P-256:P-521:X25519:X448:ffdhe2048:ffdhe3072:ffdhe4096:ffdhe8192");
 			return 1;
 		}
 	}

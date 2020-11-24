@@ -58,9 +58,9 @@ void print_message(struct mosq_config *cfg, const struct mosquitto_message *mess
 
 void my_publish_callback(struct mosquitto *mosq, void *obj, int mid, int reason_code, const mosquitto_property *properties)
 {
-	UNUSED(obj);
-	UNUSED(reason_code);
-	UNUSED(properties);
+	(void)(obj);
+	(void)(reason_code);
+	(void)(properties);
 
 	if(process_messages == false && (mid == last_mid || last_mid == 0)){
 		mosquitto_disconnect_v5(mosq, 0, cfg.disconnect_props);
@@ -73,8 +73,8 @@ void my_message_callback(struct mosquitto *mosq, void *obj, const struct mosquit
 	int i;
 	bool res;
 
-	UNUSED(obj);
-	UNUSED(properties);
+	(void)(obj);
+	(void)(properties);
 
 	if(process_messages == false) return;
 
@@ -115,9 +115,9 @@ void my_connect_callback(struct mosquitto *mosq, void *obj, int result, int flag
 {
 	int i;
 
-	UNUSED(obj);
-	UNUSED(flags);
-	UNUSED(properties);
+	(void)(obj);
+	(void)(flags);
+	(void)(properties);
 
 	if(!result){
 		mosquitto_subscribe_multiple(mosq, NULL, cfg.topic_count, cfg.topics, cfg.qos, cfg.sub_opts, cfg.subscribe_props);
@@ -145,7 +145,7 @@ void my_subscribe_callback(struct mosquitto *mosq, void *obj, int mid, int qos_c
 {
 	int i;
 
-	UNUSED(obj);
+	(void)(obj);
 
 	if(cfg.debug){
 		if(!cfg.quiet) printf("Subscribed (mid: %d): %d", mid, granted_qos[0]);
@@ -162,9 +162,9 @@ void my_subscribe_callback(struct mosquitto *mosq, void *obj, int mid, int qos_c
 
 void my_log_callback(struct mosquitto *mosq, void *obj, int level, const char *str)
 {
-	UNUSED(mosq);
-	UNUSED(obj);
-	UNUSED(level);
+	(void)(mosq);
+	(void)(obj);
+	(void)(level);
 
 	printf("%s\n", str);
 }
@@ -193,11 +193,11 @@ void print_usage(void)
 	printf("                     [--will-topic [--will-payload payload] [--will-qos qos] [--will-retain]]\n");
 #ifdef WITH_TLS
 	printf("                     [{--cafile file | --capath dir} [--cert file] [--key file]\n");
-	printf("                       [--ciphers ciphers] [--insecure]\n");
+	printf("                       [--ciphers ciphers] [--groups groups] [--insecure]\n");
 	printf("                       [--tls-alpn protocol]\n");
 	printf("                       [--tls-engine engine] [--keyform keyform] [--tls-engine-kpass-sha1]]\n");
 #ifdef FINAL_WITH_TLS_PSK
-	printf("                     [--psk hex-key --psk-identity identity [--ciphers ciphers]]\n");
+	printf("                     [--psk hex-key --psk-identity identity [--ciphers ciphers] [--groups groups]]\n");
 #endif
 #endif
 #ifdef WITH_SOCKS
@@ -261,6 +261,7 @@ void print_usage(void)
 	printf(" --key : client private key for authentication, if required by server.\n");
 	printf(" --keyform : keyfile type, can be either \"pem\" or \"engine\".\n");
 	printf(" --ciphers : openssl compatible list of TLS ciphers to support.\n");
+	printf(" --groups : openssl compatible list of TLS groups for key exchange to support.\n");
 	printf(" --tls-version : TLS protocol version, can be one of tlsv1.3 tlsv1.2 or tlsv1.1.\n");
 	printf("                 Defaults to tlsv1.2 if available.\n");
 	printf(" --insecure : do not check that the server certificate hostname matches the remote\n");
@@ -354,7 +355,7 @@ int main(int argc, char *argv[])
 #endif
 
 	rc = mosquitto_loop_forever(mosq, -1, 1);
-
+	printf("stop\n");
 	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
 
@@ -366,6 +367,7 @@ int main(int argc, char *argv[])
 		err_printf(&cfg, "Timed out\n");
 		return MOSQ_ERR_TIMEOUT;
 	}else if(rc){
+		printf("Error.\n");
 		err_printf(&cfg, "Error: %s\n", mosquitto_strerror(rc));
 	}
 	return rc;

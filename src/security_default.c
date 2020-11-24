@@ -45,7 +45,7 @@ int mosquitto_security_init_default(struct mosquitto_db *db, bool reload)
 	char *pwf;
 	char *pskf;
 
-	UNUSED(reload);
+	(void)(reload);
 
 	/* Load username/password data if required. */
 	if(db->config->per_listener_settings){
@@ -591,7 +591,7 @@ static int acl__cleanup(struct mosquitto_db *db, bool reload)
 	struct mosquitto *context, *ctxt_tmp;
 	int i;
 
-	UNUSED(reload);
+	(void)(reload);
 
 	if(!db) return MOSQ_ERR_INVAL;
 
@@ -922,7 +922,7 @@ static int unpwd__cleanup(struct mosquitto__unpwd **root, bool reload)
 {
 	struct mosquitto__unpwd *u, *tmp;
 
-	UNUSED(reload);
+	(void)(reload);
 
 	if(!root) return MOSQ_ERR_INVAL;
 

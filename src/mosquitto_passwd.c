@@ -426,7 +426,7 @@ void handle_sigint(int signal)
 	tcsetattr(0, TCSANOW, &ts);
 #endif
 
-	UNUSED(signal);
+	(void)(signal);
 
 	exit(0);
 }

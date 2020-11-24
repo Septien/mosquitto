@@ -114,9 +114,9 @@ class mosqpp_EXPORT DEPRECATED mosquittopp {
 		void DEPRECATED message_retry_set(unsigned int message_retry);
 		void DEPRECATED user_data_set(void *userdata);
 		int DEPRECATED tls_set(const char *cafile, const char *capath=NULL, const char *certfile=NULL, const char *keyfile=NULL, int (*pw_callback)(char *buf, int size, int rwflag, void *userdata)=NULL);
-		int DEPRECATED tls_opts_set(int cert_reqs, const char *tls_version=NULL, const char *ciphers=NULL);
+		int DEPRECATED tls_opts_set(int cert_reqs, const char *tls_version=NULL, const char *ciphers=NULL, const char *groups=NULL);
 		int DEPRECATED tls_insecure_set(bool value);
-		int DEPRECATED tls_psk_set(const char *psk, const char *identity, const char *ciphers=NULL);
+		int DEPRECATED tls_psk_set(const char *psk, const char *identity, const char *ciphers=NULL, const char *groups=NULL);
 		int DEPRECATED opts_set(enum mosq_opt_t option, void *value);
 
 		int DEPRECATED loop(int timeout=-1, int max_packets=1);

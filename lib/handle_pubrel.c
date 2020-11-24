@@ -90,7 +90,7 @@ int handle__pubrel(struct mosquitto_db *db, struct mosquitto *mosq)
 	rc = send__pubcomp(mosq, mid);
 	if(rc) return rc;
 #else
-	UNUSED(db);
+	(void)(db);
 
 	log__printf(mosq, MOSQ_LOG_DEBUG, "Client %s received PUBREL (Mid: %d)", mosq->id, mid);
 

@@ -1705,7 +1705,7 @@ libmosq_EXPORT int mosquitto_tls_insecure_set(struct mosquitto *mosq, bool value
  * See Also:
  *	<mosquitto_tls_set>
  */
-libmosq_EXPORT int mosquitto_tls_opts_set(struct mosquitto *mosq, int cert_reqs, const char *tls_version, const char *ciphers);
+libmosq_EXPORT int mosquitto_tls_opts_set(struct mosquitto *mosq, int cert_reqs, const char *tls_version, const char *ciphers, const char *groups);
 
 /*
  * Function: mosquitto_tls_psk_set
@@ -1732,7 +1732,7 @@ libmosq_EXPORT int mosquitto_tls_opts_set(struct mosquitto *mosq, int cert_reqs,
  * See Also:
  *	<mosquitto_tls_set>
  */
-libmosq_EXPORT int mosquitto_tls_psk_set(struct mosquitto *mosq, const char *psk, const char *identity, const char *ciphers);
+libmosq_EXPORT int mosquitto_tls_psk_set(struct mosquitto *mosq, const char *psk, const char *identity, const char *ciphers, const char *groups);
 
 
 /* ======================================================================
@@ -2386,6 +2386,7 @@ struct libmosquitto_tls {
 	char *certfile;
 	char *keyfile;
 	char *ciphers;
+	char *groups;
 	char *tls_version;
 	int (*pw_callback)(char *buf, int size, int rwflag, void *userdata);
 	int cert_reqs;

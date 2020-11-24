@@ -26,7 +26,7 @@ static void on_connect_wrapper(struct mosquitto *mosq, void *userdata, int rc)
 {
 	class mosquittopp *m = (class mosquittopp *)userdata;
 
-	UNUSED(mosq);
+	(void)(mosq);
 
 	m->on_connect(rc);
 }
@@ -34,42 +34,42 @@ static void on_connect_wrapper(struct mosquitto *mosq, void *userdata, int rc)
 static void on_connect_with_flags_wrapper(struct mosquitto *mosq, void *userdata, int rc, int flags)
 {
 	class mosquittopp *m = (class mosquittopp *)userdata;
-	UNUSED(mosq);
+	(void)(mosq);
 	m->on_connect_with_flags(rc, flags);
 }
 
 static void on_disconnect_wrapper(struct mosquitto *mosq, void *userdata, int rc)
 {
 	class mosquittopp *m = (class mosquittopp *)userdata;
-	UNUSED(mosq);
+	(void)(mosq);
 	m->on_disconnect(rc);
 }
 
 static void on_publish_wrapper(struct mosquitto *mosq, void *userdata, int mid)
 {
 	class mosquittopp *m = (class mosquittopp *)userdata;
-	UNUSED(mosq);
+	(void)(mosq);
 	m->on_publish(mid);
 }
 
 static void on_message_wrapper(struct mosquitto *mosq, void *userdata, const struct mosquitto_message *message)
 {
 	class mosquittopp *m = (class mosquittopp *)userdata;
-	UNUSED(mosq);
+	(void)(mosq);
 	m->on_message(message);
 }
 
 static void on_subscribe_wrapper(struct mosquitto *mosq, void *userdata, int mid, int qos_count, const int *granted_qos)
 {
 	class mosquittopp *m = (class mosquittopp *)userdata;
-	UNUSED(mosq);
+	(void)(mosq);
 	m->on_subscribe(mid, qos_count, granted_qos);
 }
 
 static void on_unsubscribe_wrapper(struct mosquitto *mosq, void *userdata, int mid)
 {
 	class mosquittopp *m = (class mosquittopp *)userdata;
-	UNUSED(mosq);
+	(void)(mosq);
 	m->on_unsubscribe(mid);
 }
 
@@ -77,7 +77,7 @@ static void on_unsubscribe_wrapper(struct mosquitto *mosq, void *userdata, int m
 static void on_log_wrapper(struct mosquitto *mosq, void *userdata, int level, const char *str)
 {
 	class mosquittopp *m = (class mosquittopp *)userdata;
-	UNUSED(mosq);
+	(void)(mosq);
 	m->on_log(level, str);
 }
 
@@ -363,9 +363,9 @@ int mosquittopp::tls_set(const char *cafile, const char *capath, const char *cer
 	return mosquitto_tls_set(m_mosq, cafile, capath, certfile, keyfile, pw_callback);
 }
 
-int mosquittopp::tls_opts_set(int cert_reqs, const char *tls_version, const char *ciphers)
+int mosquittopp::tls_opts_set(int cert_reqs, const char *tls_version, const char *ciphers, const char *groups)
 {
-	return mosquitto_tls_opts_set(m_mosq, cert_reqs, tls_version, ciphers);
+	return mosquitto_tls_opts_set(m_mosq, cert_reqs, tls_version, ciphers, groups);
 }
 
 int mosquittopp::tls_insecure_set(bool value)
@@ -373,9 +373,9 @@ int mosquittopp::tls_insecure_set(bool value)
 	return mosquitto_tls_insecure_set(m_mosq, value);
 }
 
-int mosquittopp::tls_psk_set(const char *psk, const char *identity, const char *ciphers)
+int mosquittopp::tls_psk_set(const char *psk, const char *identity, const char *ciphers, const char *groups)
 {
-	return mosquitto_tls_psk_set(m_mosq, psk, identity, ciphers);
+	return mosquitto_tls_psk_set(m_mosq, psk, identity, ciphers, groups);
 }
 
 }

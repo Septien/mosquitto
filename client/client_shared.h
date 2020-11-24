@@ -77,6 +77,7 @@ struct mosq_config {
 	char *certfile;
 	char *keyfile;
 	char *ciphers;
+	char *groups;
 	bool insecure;
 	char *tls_alpn;
 	char *tls_version;

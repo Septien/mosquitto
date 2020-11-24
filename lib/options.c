@@ -202,7 +202,7 @@ int mosquitto_tls_set(struct mosquitto *mosq, const char *cafile, const char *ca
 }
 
 
-int mosquitto_tls_opts_set(struct mosquitto *mosq, int cert_reqs, const char *tls_version, const char *ciphers)
+int mosquitto_tls_opts_set(struct mosquitto *mosq, int cert_reqs, const char *tls_version, const char *ciphers, const char *groups)
 {
 #ifdef WITH_TLS
 	if(!mosq) return MOSQ_ERR_INVAL;
@@ -227,6 +227,13 @@ int mosquitto_tls_opts_set(struct mosquitto *mosq, int cert_reqs, const char *tl
 		if(!mosq->tls_ciphers) return MOSQ_ERR_NOMEM;
 	}else{
 		mosq->tls_ciphers = NULL;
+	}
+
+	if (groups){
+		mosq->tls_groups = mosquitto__strdup(groups);
+		if(!mosq->tls_groups) return MOSQ_ERR_NOMEM;
+	}else{
+		mosq->tls_groups = NULL;
 	}
 
 
@@ -326,7 +333,7 @@ int mosquitto_string_option(struct mosquitto *mosq, enum mosq_opt_t option, cons
 }
 
 
-int mosquitto_tls_psk_set(struct mosquitto *mosq, const char *psk, const char *identity, const char *ciphers)
+int mosquitto_tls_psk_set(struct mosquitto *mosq, const char *psk, const char *identity, const char *ciphers, const char *groups)
 {
 #ifdef FINAL_WITH_TLS_PSK
 	if(!mosq || !psk || !identity) return MOSQ_ERR_INVAL;
@@ -348,6 +355,14 @@ int mosquitto_tls_psk_set(struct mosquitto *mosq, const char *psk, const char *i
 		if(!mosq->tls_ciphers) return MOSQ_ERR_NOMEM;
 	}else{
 		mosq->tls_ciphers = NULL;
+	}
+
+	if (groups){
+		mosq->tls_groups = mosquitto__strdup(groups);
+		if(!mosq->tls_groups) return MOSQ_ERR_NOMEM;
+	}
+	else{
+		mosq->tls_groups = NULL;
 	}
 
 	return MOSQ_ERR_SUCCESS;

@@ -98,10 +98,10 @@ static int check_repeat_time(void)
 
 void my_disconnect_callback(struct mosquitto *mosq, void *obj, int rc, const mosquitto_property *properties)
 {
-	UNUSED(mosq);
-	UNUSED(obj);
-	UNUSED(rc);
-	UNUSED(properties);
+	(void)(mosq);
+	(void)(obj);
+	(void)(rc);
+	(void)(properties);
 
 	if(rc == 0){
 		status = STATUS_DISCONNECTED;
@@ -124,9 +124,9 @@ void my_connect_callback(struct mosquitto *mosq, void *obj, int result, int flag
 {
 	int rc = MOSQ_ERR_SUCCESS;
 
-	UNUSED(obj);
-	UNUSED(flags);
-	UNUSED(properties);
+	(void)(obj);
+	(void)(flags);
+	(void)(properties);
 
 	if(!result){
 		switch(cfg.pub_mode){
@@ -184,8 +184,8 @@ void my_connect_callback(struct mosquitto *mosq, void *obj, int result, int flag
 
 void my_publish_callback(struct mosquitto *mosq, void *obj, int mid, int reason_code, const mosquitto_property *properties)
 {
-	UNUSED(obj);
-	UNUSED(properties);
+	(void)(obj);
+	(void)(properties);
 
 	last_mid_sent = mid;
 	if(reason_code > 127){
@@ -360,11 +360,11 @@ void print_usage(void)
 	printf("                     [--will-topic [--will-payload payload] [--will-qos qos] [--will-retain]]\n");
 #ifdef WITH_TLS
 	printf("                     [{--cafile file | --capath dir} [--cert file] [--key file]\n");
-	printf("                       [--ciphers ciphers] [--insecure]\n");
+	printf("                       [--ciphers ciphers] [--groups groups] [--insecure]\n");
 	printf("                       [--tls-alpn protocol]\n");
 	printf("                       [--tls-engine engine] [--keyform keyform] [--tls-engine-kpass-sha1]]\n");
 #ifdef FINAL_WITH_TLS_PSK
-	printf("                     [--psk hex-key --psk-identity identity [--ciphers ciphers]]\n");
+	printf("                     [--psk hex-key --psk-identity identity [--ciphers ciphers] [--groups groups]]\n");
 #endif
 #endif
 #ifdef WITH_SOCKS
@@ -422,6 +422,7 @@ void print_usage(void)
 	printf(" --key : client private key for authentication, if required by server.\n");
 	printf(" --keyform : keyfile type, can be either \"pem\" or \"engine\".\n");
 	printf(" --ciphers : openssl compatible list of TLS ciphers to support.\n");
+	printf(" --groups : openssl compatible list of TLS groups for key exchange to suppor.\n");
 	printf(" --tls-version : TLS protocol version, can be one of tlsv1.3 tlsv1.2 or tlsv1.1.\n");
 	printf("                 Defaults to tlsv1.2 if available.\n");
 	printf(" --insecure : do not check that the server certificate hostname matches the remote\n");

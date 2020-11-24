@@ -247,7 +247,7 @@ static unsigned int psk_client_callback(SSL *ssl, const char *hint,
 	struct mosquitto *mosq;
 	int len;
 
-	UNUSED(hint);
+	(void)(hint);
 
 	mosq = SSL_get_ex_data(ssl, tls_ex_index_mosq);
 	if(!mosq) return 0;
@@ -686,6 +686,13 @@ static int net__init_ssl_ctx(struct mosquitto *mosq)
 				mosq->sock = INVALID_SOCKET;
 				net__print_ssl_error(mosq);
 				return MOSQ_ERR_TLS;
+			}
+		}
+		if (mosq->tls_groups){
+			ret = SSL_CTX_set1_groups_list(mosq->ssl_ctx, mosq->tls_groups);
+			if(ret == 0){
+				log__printf(NULL, MOSQ_LOG_ERR, "Error: Unable to set TLS groups. Check groups list \"%s\".", mosq->tls_groups);
+				return 1;
 			}
 		}
 		if(mosq->tls_cafile || mosq->tls_capath){

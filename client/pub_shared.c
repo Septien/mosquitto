@@ -42,9 +42,9 @@ struct mosq_config cfg;
 
 void my_log_callback(struct mosquitto *mosq, void *obj, int level, const char *str)
 {
-	UNUSED(mosq);
-	UNUSED(obj);
-	UNUSED(level);
+	(void)(mosq);
+	(void)(obj);
+	(void)(level);
 
 	printf("%s\n", str);
 }

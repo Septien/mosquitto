@@ -361,7 +361,7 @@ int log__printf(struct mosquitto *mosq, int priority, const char *fmt, ...)
 	va_list va;
 	int rc;
 
-	UNUSED(mosq);
+	(void)(mosq);
 
 	va_start(va, fmt);
 	rc = log__vprintf(priority, fmt, va);

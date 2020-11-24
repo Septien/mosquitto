@@ -163,6 +163,7 @@ void client_config_cleanup(struct mosq_config *cfg)
 	free(cfg->certfile);
 	free(cfg->keyfile);
 	free(cfg->ciphers);
+	free(cfg->groups);
 	free(cfg->tls_alpn);
 	free(cfg->tls_version);
 	free(cfg->tls_engine);
@@ -484,6 +485,15 @@ int client_config_line_proc(struct mosq_config *cfg, int pub_or_sub, int argc, c
 				return 1;
 			}else{
 				cfg->ciphers = strdup(argv[i+1]);
+			}
+			i++;
+		}else if(!strcmp(argv[i], "--groups")){
+			if (i==argc-1){
+				fprintf(stderr, "Error: --groups argument given but no cipher specified.\n\n");
+				return -1;
+			}
+			else{
+				cfg->groups = strdup(argv[i+1]);
 			}
 			i++;
 #endif
@@ -1134,13 +1144,13 @@ int client_opts_set(struct mosquitto *mosq, struct mosq_config *cfg)
 		return 1;
 	}
 #  ifdef FINAL_WITH_TLS_PSK
-	if(cfg->psk && mosquitto_tls_psk_set(mosq, cfg->psk, cfg->psk_identity, NULL)){
+	if(cfg->psk && mosquitto_tls_psk_set(mosq, cfg->psk, cfg->psk_identity, NULL, NULL)){
 		err_printf(cfg, "Error: Problem setting TLS-PSK options.\n");
 		mosquitto_lib_cleanup();
 		return 1;
 	}
 #  endif
-	if((cfg->tls_version || cfg->ciphers) && mosquitto_tls_opts_set(mosq, 1, cfg->tls_version, cfg->ciphers)){
+	if((cfg->tls_version || cfg->ciphers || cfg->groups) && mosquitto_tls_opts_set(mosq, 1, cfg->tls_version, cfg->ciphers, cfg->groups)){
 		err_printf(cfg, "Error: Problem setting TLS options, check the options are valid.\n");
 		mosquitto_lib_cleanup();
 		return 1;
