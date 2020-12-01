@@ -355,7 +355,6 @@ int main(int argc, char *argv[])
 #endif
 
 	rc = mosquitto_loop_forever(mosq, -1, 1);
-	printf("stop\n");
 	mosquitto_destroy(mosq);
 	mosquitto_lib_cleanup();
 
@@ -367,7 +366,6 @@ int main(int argc, char *argv[])
 		err_printf(&cfg, "Timed out\n");
 		return MOSQ_ERR_TIMEOUT;
 	}else if(rc){
-		printf("Error.\n");
 		err_printf(&cfg, "Error: %s\n", mosquitto_strerror(rc));
 	}
 	return rc;
